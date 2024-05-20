@@ -1,0 +1,32 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Профіль користувача{% endblock %}
+
+{% block body %}
+<h2>Профіль користувача</h2>
+<p>Вітаємо, {{ user.username }}!</p>
+    {% if rentals %}
+    <h3>Ваші оренди</h3>
+    
+    <ul>
+    {% for rental in rentals %}
+        <li>
+            {{ rental.car.name }} - 
+            {% if rental.end_date %}
+                завершена (Ціна: {{ rental.price }} грн)
+            {% else %}
+                використовується
+                <form method="post" action="{% url 'main:end_rental' rental.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Завершити оренду</button>
+                </form>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Ви зараз не орендуєте авто.</p>
+
+    
+{% endif %}
+{% endblock %}

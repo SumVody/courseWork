@@ -1,0 +1,36 @@
+{% extends 'main/layout.html' %}
+{% block title %}Машини{% endblock %}
+{% block body %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for el in cars%}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h style = "font-weight: bold; font-size: 18px;">{{ el.name }}</h>
+                            <p style="font-size: 14px;">Рік: {{ el.year }}</p>
+                            <p style="font-size: 14px;">{{ el.power }} к.с</p>
+                            <p style="font-size: 14px;">{{ el.volume }} л.</p>
+                            <p style="font-size: 14px;">Кузов: {{ el.body_type }}</p>
+                            <p style="font-size: 14px;">{{ el.sing_of_car }}</p>
+                            {% if el.is_used or el.is_fixing %}
+                                {% if el.is_used %}
+                                    <p>Орендується</p>
+                                {% elif el.is_fixing %}
+                                    <p>В ремонті</p>
+                                {% endif %}
+                            {% else %}
+                            <form method="post" action="{% url 'main:rent_car' el.id %}">
+                                {% csrf_token %}    
+                                    <button type="submit" class="btn btn-green">Орендувати</button>
+                                </form>
+                           {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
